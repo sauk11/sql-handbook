@@ -1,0 +1,187 @@
+DDL command
+Create Database, Table
+
+---CREATE DATABASE Database_Name; 
+
+CREATE TABLE Table_name(
+     column_name1 INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+     column_name2 VARCHAR( 25 ) NOT NULL ,
+     column_name3 VARCHAR( 25 ) NOT NULL ,
+     column_name4 INT NOT NULL 
+     )
+     
+---Drop
+
+DROP DATABASE Database_Name; 
+DROP TABLE  Database_Name; 
+
+---Alter
+
+ALTER TABLE Table_name ADD column_name column_definition;    # column_definition = int, varchar , etc
+ALTER TABLE Table_name DROP Column_Name_1 , column_Name_2 , ….., column_Name_N; 
+ALTER TABLE table_name MODIFY ( column_name column_datatype(size)); 
+
+---Truncate
+
+TRUNCATE TABLE Table_Name;  
+
+---Rename
+
+RENAME TABLE Old_Table_Name TO New_Table_Name;
+
+DML commands
+---Select
+
+SELECT COLUMN_NAME FROM TABLE_NAME;
+
+---Where
+
+SELECT Column_name FROM Table_name WHERE (CONDITION);   #select with where condition
+
+---Group By
+
+SELECT column_Name_1, column_Name_2, ..... 
+aggregate_function_name(column_Name2) 
+FROM table_name GROUP BY column_Name1;   #SELECT Statement with GROUP BY clause
+
+---Having
+
+SELECT column_Name_1, column_Name_2, .....
+aggregate_function_name(column_Name_2) 
+FROM table_name GROUP BY column_Name1 HAVING (CONDITION);  #SELECT Statement with HAVING clause
+
+---Order By
+
+SELECT Column_Name_1, Column_Name_2, ....., column_Name_N 
+FROM table_name 
+WHERE [Condition] 
+ORDER BY[column_Name_1, column_Name_2, ....., column_Name_N asc | desc ];  #By default ascending 
+
+---Random using order by
+
+SELECT column FROM table ORDER BY RAND () LIMIT 1; #mysql
+SELECT column FROM table ORDER BY RANDOM () LIMIT 1;  #postgre sql
+SELECT TOP 1 column FROM table ORDER BY NEWID ();   # sql server
+
+---UNIQUE
+
+SELECT UNIQUE column_name  
+FROM table_name;  
+
+---DISTINCT
+
+SELECT DISTINCT column_name  
+FROM table_name;
+
+---COUNT
+
+SELECT COUNT(column_name) FROM table_name;
+SELECT COUNT(column_name) FROM table_name WHERE [condition];  
+
+---IN
+
+SELECT *  
+FROM Table_name  
+WHERE column_name IN ( rows)  
+
+---AND
+
+SELECT Column_name FROM Table_name WHERE condition1 AND condition2;  
+
+---OR
+
+SELECT Column_name FROM Table_name WHERE condition1 OR condition2;  
+
+---WITH
+
+WITH <alias_name> AS (sql_sub-query_statement)  
+SELECT column_list FROM <alias_name> [table name]  
+[WHERE <join_condition>]  
+
+---AS
+
+select Column_name as new_column_name from Table_name
+
+---INSERT
+
+INSERT INTO table_name  
+VALUES (value1, value2, value3....);  
+
+---UPDATE
+
+UPDATE table_name  
+SET column_name = expression  
+WHERE conditions 
+
+UPDATE Table1  
+INNER JOIN  
+table2  
+ON table1.columnname = table1.columnname  
+SET table1.columnname = table1.columnname  #update using join 
+
+---DELETE
+
+DELETE FROM table_name [WHERE condition]; #When you use the drop statement it deletes the table's row together 
+                                          #with the table's definition so all the relationships of that table with other tables will no longer be valid.
+
+DELETE FROM STUDENT_NAME;   # it will delete all rows from table
+
+
+DELETE [target table]  
+FROM [table1]  
+INNER JOIN [table2]  
+ON [table1.[joining column] = [table2].[joining column]  
+WHERE [condition]                                        # it will delete join 
+
+---TRUNCATE
+
+TRUNCATE TABLE Table_name; #the table structure remains the same
+
+---CREATE AND DELETE VIEW
+
+CREATE VIEW view_name AS   
+SELECT columns  
+FROM tables  
+WHERE conditions;                 # create view
+
+
+DROP VIEW view_name               #delete view
+
+---JOIN
+
+SELECT table1.column1, table2.column2....  
+FROM table1   
+LEFT JOIN table2  
+ON table1.column_field = table2.column_field;  # left join
+
+SELECT table1.column1, table2.column2....  
+FROM table1   
+LEFT JOIN table2  
+ON table1.column_field = table2.column_field;  # Right join
+
+
+SELECT table1.column1, table2.column2....  
+FROM table1   
+LEFT JOIN table2  
+ON table1.column_field = table2.column_field;  # Full join
+
+SELECT * FROM table1 CROSS JOIN table2;  #cross join
+
+Window Functions
+---Aggregate Window Function
+
+SELECT Column_names
+ Window_function(column_name) OVER( PARTITION BY column_name ORDER BY column_name) AS new_col_name
+ FROM Table_name                          #window_function =  SUM(), COUNT(), AVERAGE(), MAX(), MIN()
+ 
+ ---Ranking Window Functions
+ 
+ SELECT 
+ROW_NUMBER() OVER (PARTITION BY col_name ORDER BY col_name DESC) 
+AS new_col_name, other_col_names, 
+RANK() OVER(PARTITION BY col_name 
+ORDER BY col_name DESC) AS new_col_name,
+DENSE_RANK() OVER(PARTITION BY col_name 
+                  ORDER BY col_name DESC) 
+                  AS new_col_name,
+FROM Table_name 
